@@ -1,0 +1,119 @@
+Project Code:
+
+-- Create Authors table
+CREATE TABLE IF NOT EXISTS Authors (
+    author_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    birth_year INT
+);
+
+-- Create Members table
+CREATE TABLE IF NOT EXISTS Members (
+    member_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    join_date DATE,
+    email TEXT UNIQUE NOT NULL
+);
+
+-- Create Books table
+CREATE TABLE IF NOT EXISTS Books (
+    book_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    author_id INT,
+    published_year INT,
+    genre TEXT,
+    FOREIGN KEY (author_id) REFERENCES Authors(author_id)
+);
+
+-- Create Transactions table
+CREATE TABLE IF NOT EXISTS Transactions (
+    transaction_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    book_id INT,
+    member_id INT,
+    borrow_date DATE,
+    return_date DATE,
+    FOREIGN KEY (book_id) REFERENCES Books(book_id),
+    FOREIGN KEY (member_id) REFERENCES Members(member_id)
+);
+
+-- Insert sample data into Authors table
+INSERT INTO Authors (name, birth_year) VALUES ('J.K. Rowling', 1965);
+INSERT INTO Authors (name, birth_year) VALUES ('George Orwell', 1903);
+INSERT INTO Authors (name, birth_year) VALUES ('J.R.R. Tolkien', 1892);
+
+-- Insert sample data into Members table
+INSERT INTO Members (name, join_date, email) VALUES ('Alice Smith', '2023-01-15', 'alice.smith@example.com');
+INSERT INTO Members (name, join_date, email) VALUES ('Bob Johnson', '2023-02-20', 'bob.johnson@example.com');
+
+-- Insert sample data into Books table
+INSERT INTO Books (title, author_id, published_year, genre) VALUES ('Harry Potter and the Philosopher''s Stone', 1, 1997, 'Fantasy');
+INSERT INTO Books (title, author_id, published_year, genre) VALUES ('1984', 2, 1949, 'Dystopian');
+INSERT INTO Books (title, author_id, published_year, genre) VALUES ('The Hobbit', 3, 1937, 'Fantasy');
+
+-- Insert sample data into Transactions table
+INSERT INTO Transactions (book_id, member_id, borrow_date, return_date) VALUES (1, 1, '2023-03-01', NULL);
+INSERT INTO Transactions (book_id, member_id, borrow_date, return_date) VALUES (2, 2, '2023-03-05', '2023-04-05');
+
+-- View all authors
+SELECT * FROM Authors;
+
+-- View all members
+SELECT * FROM Members;
+
+-- View all books
+SELECT * FROM Books;
+
+-- View all transactions
+SELECT * FROM Transactions;
+
+-- Update an author's information
+UPDATE Authors
+SET birth_year = 1967
+WHERE author_id = 1;
+
+-- Update a member's information
+UPDATE Members
+SET email = 'alice.smith@newdomain.com'
+WHERE member_id = 1;
+
+-- Update a book's information
+UPDATE Books
+SET published_year = 1998
+WHERE book_id = 1;
+
+-- Update a transaction's return date
+UPDATE Transactions
+SET return_date = '2023-03-15'
+WHERE transaction_id = 1;
+
+-- Delete transactions associated with a book
+DELETE FROM Transactions
+WHERE book_id = 2;
+
+-- Delete transactions associated with a member
+DELETE FROM Transactions
+WHERE member_id = 2;
+
+-- Delete books
+DELETE FROM Books
+WHERE book_id = 2;
+
+-- Delete members
+DELETE FROM Members
+WHERE member_id = 2;
+
+-- Delete authors
+DELETE FROM Authors
+WHERE author_id = 3;
+
+-- View all authors after deletion
+SELECT * FROM Authors;
+
+-- View all members after deletion
+SELECT * FROM Members;
+
+-- View all books after deletion
+SELECT * FROM Books;
+
+-- View all transactions after deletion
+SELECT * FROM Transactions;
